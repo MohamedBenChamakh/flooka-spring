@@ -5,6 +5,8 @@ public class CategoryDTO {
     private String id;
     private String title;
 
+    private String icon;
+
     public CategoryDTO() {
     }
 
@@ -22,5 +24,13 @@ public class CategoryDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

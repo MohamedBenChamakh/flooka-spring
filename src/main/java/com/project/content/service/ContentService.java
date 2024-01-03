@@ -2,14 +2,18 @@ package com.project.content.service;
 
 
 import com.project.content.dto.ContentDTO;
+import com.project.content.dto.ContentDetailsDTO;
 
+import java.net.URI;
 import java.util.List;
 
 public interface ContentService {
 
-    List<ContentDTO> getAllContents();
+    List<ContentDTO> getAllContents(int page);
 
     ContentDTO getContentById(String contentId);
 
-    List<ContentDTO> getContentByCategoryId(String categoryId);
+    List<ContentDTO> getContentByCategoryId(String categoryId, int page);
+
+    ContentDTO createContent(ContentDetailsDTO contentDTO);
 }

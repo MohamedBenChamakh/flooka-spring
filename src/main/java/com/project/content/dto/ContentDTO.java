@@ -10,7 +10,7 @@ public class ContentDTO {
     private MediaTypeDTO mediaTypeDTO;
     private UserShortDTO publisher;
     private String createdAt;
-    private double price;
+
 
     public ContentDTO() {
     }
@@ -62,14 +62,6 @@ public class ContentDTO {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public UserShortDTO getPublisher() {

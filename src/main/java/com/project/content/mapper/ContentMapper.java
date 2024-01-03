@@ -1,6 +1,7 @@
 package com.project.content.mapper;
 import com.project.content.domain.Content;
 import com.project.content.dto.ContentDTO;
+import com.project.content.dto.ContentDetailsDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -13,7 +14,9 @@ public interface ContentMapper {
     ContentMapper INSTANCE = Mappers.getMapper(ContentMapper.class);
 
     @Mapping(target = "createdAt", dateFormat = "dd/MM/yyyy")
-    @Mapping(target = "publisher",source = "user")
+    @Mapping(target = "publisher")
     ContentDTO toDTO(Content content);
     List<ContentDTO> toDTO(List<Content> contentList);
+
+    Content toEntity(ContentDetailsDTO contentDTO);
 }

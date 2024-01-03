@@ -28,7 +28,7 @@ public class User {
 
     private String picture;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "publisher")
     private List<Content> contents;
 
 

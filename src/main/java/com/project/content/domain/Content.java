@@ -24,7 +24,7 @@ public class Content {
     private Category category;
 
     @ManyToOne
-    private User user;
+    private User publisher;
 
     public Content() {
     }
@@ -93,11 +93,11 @@ public class Content {
         this.price = price;
     }
 
-    public User getUser() {
-        return user;
+    public User getPublisher() {
+        return publisher;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPublisher(User publisher) {
+        this.publisher = publisher;
     }
 }

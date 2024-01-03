@@ -1,9 +1,11 @@
 package com.project.content.controller.impl;
 
+import com.project.content.dto.ContentDetailsDTO;
 import com.project.content.service.ContentService;
 import com.project.content.controller.ContentController;
 import com.project.content.dto.ContentDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,8 +21,13 @@ public class ContentControllerImpl implements ContentController {
 
 
     @Override
-    public ResponseEntity<List<ContentDTO>> getAllContents() {
-        return ResponseEntity.ok(contentService.getAllContents());
+    public ResponseEntity<List<ContentDTO>> getAllContents(@RequestParam("page") int page) {
+        return ResponseEntity.ok(contentService.getAllContents(page));
+    }
+
+    @Override
+    public ResponseEntity<ContentDTO> createContent(ContentDetailsDTO contentDTO) {
+        return  ResponseEntity.ok(contentService.createContent(contentDTO));
     }
 
     @Override
@@ -29,7 +36,7 @@ public class ContentControllerImpl implements ContentController {
     }
 
     @Override
-    public ResponseEntity<List<ContentDTO>> getContentsByCategoryId(String categoryId) {
-        return ResponseEntity.ok(contentService.getContentByCategoryId(categoryId));
+    public ResponseEntity<List<ContentDTO>> getContentsByCategoryId(String categoryId, int page) {
+        return ResponseEntity.ok(contentService.getContentByCategoryId(categoryId, page));
     }
 }

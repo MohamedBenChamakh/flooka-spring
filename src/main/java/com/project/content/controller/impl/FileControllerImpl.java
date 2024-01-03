@@ -1,5 +1,6 @@
 package com.project.content.controller.impl;
 
+import com.project.content.utils.FileManager;
 import com.project.content.controller.FileController;
 import com.project.content.service.StreamingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +12,34 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 public class FileControllerImpl implements FileController {
-
     @Autowired
     private StreamingService streamingService;
 
-    @GetMapping(value = "video/{title}", produces = "video/mp4")
+    private final Path basePath = Paths.get("src/main/resources/upload/");
+
     public Mono<Resource> getVideo(@PathVariable String title, @RequestHeader("Range") String range) {
         return streamingService.getVideo(title);
     }
 
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        File path = new File("./src/main/resources/images/" + file.getOriginalFilename());
-        path.createNewFile();
-        return ResponseEntity.ok("./src/main/resources/images/\" + file.getOriginalFilename()");
+    public ResponseEntity<Path> uploadFile(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        try {
+            Files.createDirectories(basePath);
+            Path filePath = Paths.get(basePath + File.separator + file.getOriginalFilename());
+            //FileManager.optimizeImage(file);
+            FileManager.convertToMp4(file);
+            //Files.write(filePath, file.getBytes());
+            return ResponseEntity.ok().body(filePath);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
