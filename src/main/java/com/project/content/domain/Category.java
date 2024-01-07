@@ -18,6 +18,9 @@ public class Category {
 
     private String icon;
 
+    private String description;
+
+
     @OneToMany(mappedBy = "category")
     private List<Content> contentList;
 
@@ -54,5 +57,13 @@ public class Category {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

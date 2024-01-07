@@ -12,34 +12,47 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import org.apache.commons.io.IOUtils;
 @RestController
 public class FileControllerImpl implements FileController {
     @Autowired
     private StreamingService streamingService;
 
-    private final Path basePath = Paths.get("src/main/resources/upload/");
 
     public Mono<Resource> getVideo(@PathVariable String title, @RequestHeader("Range") String range) {
         return streamingService.getVideo(title);
     }
 
-    public ResponseEntity<Path> uploadFile(@RequestParam("file") MultipartFile file) {
+    @Override
+    public byte[] getImage(String title) throws IOException {
+        InputStream in = getClass()
+                    .getResourceAsStream("/images/"  + title+".jpg");
+
+        if (in == null) {
+            // Log a message or handle the null case appropriately
+            System.out.println("Resource not found: " + title+".jpg");
+            return null;
+        }
+        return IOUtils.toByteArray(in);
+    }
+
+
+    public ResponseEntity<Path> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        try {
-            Files.createDirectories(basePath);
-            Path filePath = Paths.get(basePath + File.separator + file.getOriginalFilename());
-            //FileManager.optimizeImage(file);
+        String extension =file.getContentType().split("/")[0];
+        // Files.createDirectories(basePath);
+        if(extension.equals("image")){
+            FileManager.optimizeImage(file);
+        }else if(extension.equals("video")){
             FileManager.convertToMp4(file);
-            //Files.write(filePath, file.getBytes());
-            return ResponseEntity.ok().body(filePath);
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().build();
         }
+        return ResponseEntity.ok().build();
+
     }
 }

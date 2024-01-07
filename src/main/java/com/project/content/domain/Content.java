@@ -3,7 +3,9 @@ package com.project.content.domain;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "content")
@@ -19,7 +21,15 @@ public class Content {
     private double price;
     private String media;
     private MediaType mediaType;
-    private Date createdAt;
+    private Date createdAt = new Date();
+    private long totalLikes;
+    private long totalComments;
+    @OneToMany
+    private List<User> likes;
+
+    @OneToMany(mappedBy = "content")
+    private List<Comment> comments;
+
     @ManyToOne
     private Category category;
 
@@ -99,5 +109,37 @@ public class Content {
 
     public void setPublisher(User publisher) {
         this.publisher = publisher;
+    }
+
+    public long getTotalLikes() {
+        return totalLikes;
+    }
+
+    public void setTotalLikes(long totalLikes) {
+        this.totalLikes = totalLikes;
+    }
+
+    public long getTotalComments() {
+        return totalComments;
+    }
+
+    public void setTotalComments(long totalComments) {
+        this.totalComments = totalComments;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<User> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<User> likes) {
+        this.likes = likes;
     }
 }

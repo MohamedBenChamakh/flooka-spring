@@ -1,6 +1,8 @@
 package com.project.content.dto;
 
 
+import java.math.BigInteger;
+
 public class ContentDTO {
 
     private String id;
@@ -8,9 +10,10 @@ public class ContentDTO {
     private String description;
     private String media;
     private MediaTypeDTO mediaTypeDTO;
+    private BigInteger totalLikes;
+    private BigInteger totalComments;
     private UserShortDTO publisher;
     private String createdAt;
-
 
     public ContentDTO() {
     }
@@ -70,5 +73,29 @@ public class ContentDTO {
 
     public void setPublisher(UserShortDTO publisher) {
         this.publisher = publisher;
+    }
+
+    public MediaTypeDTO getMediaTypeDTO() {
+        return mediaTypeDTO;
+    }
+
+    public void setMediaTypeDTO(MediaTypeDTO mediaTypeDTO) {
+        this.mediaTypeDTO = mediaTypeDTO;
+    }
+
+    public BigInteger getTotalLikes() {
+        return totalLikes;
+    }
+
+    public void setTotalLikes(BigInteger totalLikes) {
+        this.totalLikes = totalLikes;
+    }
+
+    public BigInteger getTotalComments() {
+        return totalComments;
+    }
+
+    public void setTotalComments(BigInteger totalComments) {
+        this.totalComments = totalComments;
     }
 }

@@ -13,8 +13,7 @@ public interface ContentMapper {
 
     ContentMapper INSTANCE = Mappers.getMapper(ContentMapper.class);
 
-    @Mapping(target = "createdAt", dateFormat = "dd/MM/yyyy")
-    @Mapping(target = "publisher")
+    @Mapping(target = "createdAt", dateFormat = "MM/dd/yyyy HH:mm")
     ContentDTO toDTO(Content content);
     List<ContentDTO> toDTO(List<Content> contentList);
 

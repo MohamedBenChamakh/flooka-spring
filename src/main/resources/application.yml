@@ -1,21 +1,11 @@
 server:
   port: 8081
 
-
-
 spring:
-  webflux:
-    codec:
-      max-in-memory-size: 100MB
   servlet:
       multipart:
        max-file-size: 100MB
        max-request-size: 100MB
-       enabled: true
-       file-size-threshold: 0
-       location: /tmp
-       resolve-lazily: false
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -23,9 +13,33 @@ spring:
       hibernate:
         globally_quoted_identifiers: true
     show-sql: true
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/projectsapp
     username: root
     password: root
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 457399083430-bqvv7hgohh3fja3q6g613si682prpjbh.apps.googleusercontent.com
+            clientSecret: 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
+            redirectUri: "http://localhost:8081/login/oauth2/code/google"
+            authorizationUri: "https://accounts.google.com/o/oauth2/auth"
+            tokenUri: "https://oauth2.googleapis.com/token"
+            userInfoUri: "https://www.googleapis.com/oauth2/v3/userinfo"
+            jwkSetUri: "https://www.googleapis.com/oauth2/v3/certs"
+            clientName: "Google"
+            scope:
+                - email
+                - profile
+                - email
+                - address
+                - phone
+
+config:
+  path:
+    tmp: "src/main/resources/tmp/"
+    videos: "src/main/resources/videos/"
+    images: "src/main/resources/images/"
