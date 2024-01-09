@@ -3,6 +3,7 @@ package com.project.content.domain;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,9 +33,16 @@ public class User {
     @OneToMany(mappedBy = "publisher")
     private List<Content> contents;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
+
 
 
     public User() {
+    }
+
+    public User(String id) {
+        this.id = id;
     }
 
     public String getId() {

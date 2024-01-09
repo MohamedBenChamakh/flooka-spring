@@ -1,15 +1,23 @@
 package com.project.content.service.impl;
 
+import com.project.content.domain.Content;
+import com.project.content.domain.Like;
+import com.project.content.domain.User;
 import com.project.content.dto.ContentDTO;
 import com.project.content.dto.ContentDetailsDTO;
 import com.project.content.mapper.ContentMapper;
 import com.project.content.repository.ContentRepository;
 import com.project.content.service.ContentService;
+import com.project.content.utils.TokenManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ContentServiceImpl implements ContentService {
@@ -43,5 +51,28 @@ public class ContentServiceImpl implements ContentService {
     public ContentDTO createContent(ContentDetailsDTO contentDTO) {
         return ContentMapper.INSTANCE.toDTO(contentRepository
                 .save(ContentMapper.INSTANCE.toEntity(contentDTO)));
+    }
+
+    @Override
+    public ContentDTO likeContent(String contentId, Principal principal) {
+        String userId = TokenManager.extractFromToken("sub",principal);
+        Optional<Content> contentOptional = contentRepository.findById(contentId);
+        if (contentOptional.isPresent()) {
+            Content content = contentOptional.get();
+            List<Like> likes = content.getLikes();
+            Optional<Like> optionalLike = likes.stream()
+                    .filter(likeEntity -> likeEntity.getUser().getId().equals(userId))
+                    .findAny();
+            if(optionalLike.isPresent()){
+                likes.remove(optionalLike.get());
+            }else{
+                Like like = new Like(userId, contentId);
+                likes.add(like);
+            }
+            content.setLikes(likes);
+            content.setTotalLikes(content.getLikes().size());
+            return ContentMapper.INSTANCE.toDTO(contentRepository.saveAndFlush(content));
+        }
+        return null;
     }
 }

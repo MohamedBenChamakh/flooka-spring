@@ -5,6 +5,7 @@ import com.project.content.dto.ContentDetailsDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface ContentController {
@@ -20,4 +21,8 @@ public interface ContentController {
 
     @GetMapping("/category/{categoryId}")
     ResponseEntity<List<ContentDTO>> getContentsByCategoryId(@PathVariable String categoryId, @RequestParam(value = "page") int page);
+
+
+    @PutMapping("/content/{contentId}/like")
+    ResponseEntity<ContentDTO> likeContent(@PathVariable String contentId, Principal principal);
 }

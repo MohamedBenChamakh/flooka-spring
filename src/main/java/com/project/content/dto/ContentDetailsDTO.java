@@ -1,8 +1,13 @@
 package com.project.content.dto;
 
+import com.project.content.domain.Like;
+
+import java.util.List;
+
 public class ContentDetailsDTO extends  ContentDTO{
 
     private CategoryDTO category;
+
 
     public ContentDetailsDTO() {
         super();
@@ -15,4 +20,6 @@ public class ContentDetailsDTO extends  ContentDTO{
     public void setCategory(CategoryDTO category) {
         this.category = category;
     }
+
+
 }

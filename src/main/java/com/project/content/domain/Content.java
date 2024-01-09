@@ -1,9 +1,12 @@
 package com.project.content.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,16 +21,15 @@ public class Content {
     private String title;
     @Column(columnDefinition = "TEXT")
     private String description;
-    private double price;
     private String media;
     private MediaType mediaType;
     private Date createdAt = new Date();
     private long totalLikes;
     private long totalComments;
-    @OneToMany
-    private List<User> likes;
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "content")
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
     @ManyToOne
@@ -37,6 +39,10 @@ public class Content {
     private User publisher;
 
     public Content() {
+    }
+
+    public Content(String id) {
+        this.id = id;
     }
 
     public String getId() {
@@ -95,14 +101,6 @@ public class Content {
         this.createdAt = createdAt;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public User getPublisher() {
         return publisher;
     }
@@ -135,11 +133,11 @@ public class Content {
         this.comments = comments;
     }
 
-    public List<User> getLikes() {
+    public List<Like> getLikes() {
         return likes;
     }
 
-    public void setLikes(List<User> likes) {
+    public void setLikes(List<Like> likes) {
         this.likes = likes;
     }
 }

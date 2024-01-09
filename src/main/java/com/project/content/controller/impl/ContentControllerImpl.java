@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class ContentControllerImpl implements ContentController {
 
     @Override
     public ResponseEntity<ContentDTO> createContent(ContentDetailsDTO contentDTO) {
-        return  ResponseEntity.ok(contentService.createContent(contentDTO));
+        return ResponseEntity.ok(contentService.createContent(contentDTO));
     }
 
     @Override
@@ -38,5 +39,12 @@ public class ContentControllerImpl implements ContentController {
     @Override
     public ResponseEntity<List<ContentDTO>> getContentsByCategoryId(String categoryId, int page) {
         return ResponseEntity.ok(contentService.getContentByCategoryId(categoryId, page));
+    }
+
+    @Override
+    public ResponseEntity<ContentDTO> likeContent(String contentId, Principal principal) {
+        ContentDTO contentDTO = contentService.likeContent(contentId, principal);
+        if (contentDTO == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(contentDTO);
     }
 }

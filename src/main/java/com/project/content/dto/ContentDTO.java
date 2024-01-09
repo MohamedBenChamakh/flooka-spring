@@ -2,6 +2,7 @@ package com.project.content.dto;
 
 
 import java.math.BigInteger;
+import java.util.List;
 
 public class ContentDTO {
 
@@ -14,6 +15,7 @@ public class ContentDTO {
     private BigInteger totalComments;
     private UserShortDTO publisher;
     private String createdAt;
+    private List<LikeDTO> likes;
 
     public ContentDTO() {
     }
@@ -97,5 +99,13 @@ public class ContentDTO {
 
     public void setTotalComments(BigInteger totalComments) {
         this.totalComments = totalComments;
+    }
+
+    public List<LikeDTO> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<LikeDTO> likes) {
+        this.likes = likes;
     }
 }

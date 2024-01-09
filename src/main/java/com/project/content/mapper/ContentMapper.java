@@ -1,7 +1,10 @@
 package com.project.content.mapper;
+
 import com.project.content.domain.Content;
+import com.project.content.domain.Like;
 import com.project.content.dto.ContentDTO;
 import com.project.content.dto.ContentDetailsDTO;
+import com.project.content.dto.LikeDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -18,4 +21,7 @@ public interface ContentMapper {
     List<ContentDTO> toDTO(List<Content> contentList);
 
     Content toEntity(ContentDetailsDTO contentDTO);
+
+    LikeDTO toDTO(Like like);
+
 }
