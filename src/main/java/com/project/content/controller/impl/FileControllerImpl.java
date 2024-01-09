@@ -46,7 +46,6 @@ public class FileControllerImpl implements FileController {
             return ResponseEntity.badRequest().build();
         }
         String extension =file.getContentType().split("/")[0];
-        // Files.createDirectories(basePath);
         if(extension.equals("image")){
             FileManager.optimizeImage(file);
         }else if(extension.equals("video")){

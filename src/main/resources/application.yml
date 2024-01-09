@@ -1,5 +1,7 @@
 server:
   port: 8081
+  servelet:
+    context-path: /api
 
 spring:
   servlet:
@@ -20,23 +22,33 @@ spring:
     password: root
   security:
     oauth2:
-      client:
-        registration:
-          google:
-            clientId: 457399083430-bqvv7hgohh3fja3q6g613si682prpjbh.apps.googleusercontent.com
-            clientSecret: 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
-            redirectUri: "http://localhost:8081/login/oauth2/code/google"
-            authorizationUri: "https://accounts.google.com/o/oauth2/auth"
-            tokenUri: "https://oauth2.googleapis.com/token"
-            userInfoUri: "https://www.googleapis.com/oauth2/v3/userinfo"
-            jwkSetUri: "https://www.googleapis.com/oauth2/v3/certs"
-            clientName: "Google"
-            scope:
-                - email
-                - profile
-                - email
-                - address
-                - phone
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/app
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+
+jwt:
+  auth:
+    converter:
+      resource-id: backend-client
+      credentials:
+        secret: utydj5ehdEOexWcLiwVr5t5eFwWJW04I
+      principal-attribute: preferred_username
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+#keycloak:
+#  realm: app
+#  auth-server-url:  http://localhost:8082
+#  ssl-required: external
+#  resource: backend-client
+#  bearer-only: true
+#  credentials:
+#   secret: utydj5ehdEOexWcLiwVr5t5eFwWJW04I
+#  use-resource-role-mappings: true
 
 config:
   path:

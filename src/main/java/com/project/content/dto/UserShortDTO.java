@@ -3,6 +3,9 @@ package com.project.content.dto;
 public class UserShortDTO {
 
     private String id;
+
+    private String picture;
+
     private String firstName;
     private String lastName;
 
@@ -31,5 +34,13 @@ public class UserShortDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }
