@@ -1,5 +1,6 @@
 package com.project.content.controller;
 
+import com.project.content.dto.FileDTO;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,5 @@ public interface FileController {
      @ResponseBody byte[] getImage(@PathVariable String title) throws IOException;
 
     @PostMapping(value = "/file" )
-    ResponseEntity<Path> uploadFile(@RequestParam("file") MultipartFile file ) throws IOException;
+    ResponseEntity<FileDTO> uploadFile(@RequestParam("file") MultipartFile file ) throws IOException;
 }

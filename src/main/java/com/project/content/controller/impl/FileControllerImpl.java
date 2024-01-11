@@ -1,5 +1,6 @@
 package com.project.content.controller.impl;
 
+import com.project.content.dto.FileDTO;
 import com.project.content.utils.FileManager;
 import com.project.content.controller.FileController;
 import com.project.content.service.StreamingService;
@@ -41,17 +42,20 @@ public class FileControllerImpl implements FileController {
     }
 
 
-    public ResponseEntity<Path> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<FileDTO> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
         String extension =file.getContentType().split("/")[0];
+        String fileName;
         if(extension.equals("image")){
-            FileManager.optimizeImage(file);
+            fileName=FileManager.optimizeImage(file);
         }else if(extension.equals("video")){
-            FileManager.convertToMp4(file);
+            fileName=FileManager.convertToMp4(file);
+        }else{
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new FileDTO(fileName));
 
     }
 }

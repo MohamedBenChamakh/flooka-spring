@@ -1,6 +1,8 @@
 package com.project.content.utils;
 
 
+import com.nimbusds.jwt.util.DateUtils;
+import net.coobird.thumbnailator.ThumbnailParameter;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,23 +20,34 @@ import java.nio.file.Paths;
 public class FileManager {
 
 
-    public static void optimizeImage(MultipartFile file) throws IOException {
+    public static String optimizeImage(MultipartFile file) throws IOException {
         final Path basePath = Paths.get("src/main/resources/images/");
         File source = convertMultipartFileToFile(file, basePath);
         BufferedImage bimg = ImageIO.read(source);
         int width = bimg.getWidth();
         int height = bimg.getHeight();
+        final String[] generatedFileName = new String[1];
         Thumbnails.of(source)
                 .size(width, height)
                 .outputFormat("jpg")
-                .toFiles(Rename.NO_CHANGE);
+                .toFiles(new Rename() {
+                    @Override
+                    public String apply(String name, ThumbnailParameter param) {
+                        long currentTimeMillis = System.currentTimeMillis();
+                        generatedFileName[0] ="image_" + currentTimeMillis;
+                        return generatedFileName[0];
+                    }
+                });
+        return generatedFileName[0];
     }
 
-    public static boolean convertToMp4(MultipartFile input) {
+
+    public static String convertToMp4(MultipartFile input) {
         Path tmpPath = Path.of("src/main/resources/tmp/");
         Path path = Path.of("src/main/resources/videos/");
         File source = convertMultipartFileToFile(input, tmpPath);
-        File target = new File(path + File.separator + input.getOriginalFilename());
+        String generatedFileName= "video_"+ System.currentTimeMillis()+".mp4";
+        File target = new File(path + File.separator + generatedFileName);
 
         /* Step 2. Set Audio Attributes for conversion*/
         AudioAttributes audio = new AudioAttributes();
@@ -64,10 +77,9 @@ public class FileManager {
         try {
             Encoder encoder = new Encoder();
             encoder.encode(new MultimediaObject(source), target, attrs);
-            return true;
+            return generatedFileName;
         } catch (Exception e) {
-            /*Handle here the video failure*/
-            return false;
+            return null;
         }
     }
 
